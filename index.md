@@ -1,37 +1,26 @@
-## Welcome to GitHub Pages
-
-You can use the [editor on GitHub](https://github.com/iamxdd/UseTool/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/iamxdd/UseTool/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+/**
+ * 限制数字且最多输入小数的位数
+ * @param  {[type]} elem 输入的对象
+ * @param  {[type]} len  输入长度
+ * @return {[type]}      [description]
+ */
+function limitNumber(elem, len) {
+	elem.addEventListener("input",function(e){
+		var result = "";
+		var val = e.target.value;
+		//最后一个字符是.
+		if (val[val.length - 1] === ".") {
+			//如果.符号超过一个
+			if (val.split(".").length > 2) {
+				val = val.slice(0, -1);
+			} else if (val.split(".").length === 2 && val.slice(val.indexOf("."), val.length - 1).length > 2) {
+				val = val.slice(0, val.indexOf(".") + 2)
+			}
+		}
+		//存在.符号并且不止一位数
+		else if (val[val.length - 1] !== "." && val.indexOf(".") !== -1) {
+			val = val.slice(0, val.indexOf(".") + (len || 2 + 1))
+		}
+		e.target.value = val.replace(/[^\d\.]/g, "");
+	})
+}
